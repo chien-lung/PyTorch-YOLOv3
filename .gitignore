@@ -5,8 +5,12 @@ build
 *.egg-info
 dist
 output
+test/*
+data/*
 data/coco
+yolo/*
 backup
 weights/*.weights
+weights/darknet53.conv.74
 __pycache__
 checkpoints
