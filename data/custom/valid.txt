@@ -668,7 +668,6 @@ data/custom/images/addedLane_1333391720.avi_image3.png
 data/custom/images/pedestrianCrossing_1333395588.avi_image18.png
 data/custom/images/speedLimit_1330546108.avi_image6.png
 data/custom/images/signalAhead_1333389997.avi_image21.png
-data/custom/images/.DS_Store
 data/custom/images/school_1333388523.avi_image4.png
 data/custom/images/slow_1333397495.avi_image9.png
 data/custom/images/laneEnds_1331866559.avi_image11.png

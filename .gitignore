@@ -5,6 +5,7 @@ build
 *.egg-info
 dist
 output
+logs
 test/*
 data/*
 data/coco
