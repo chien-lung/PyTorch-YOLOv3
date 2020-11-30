@@ -3,6 +3,8 @@ curveLeft
 curveRight
 dip
 doNotEnter
+doNotPass
+intersection
 keepRight
 laneEnds
 merge
@@ -13,6 +15,8 @@ rampSpeedAdvisory20
 rampSpeedAdvisory35
 rampSpeedAdvisory40
 rampSpeedAdvisory45
+rampSpeedAdvisory50
+rampSpeedAdvisoryUrdbl
 rightLaneMustTurn
 roundabout
 school
@@ -23,7 +27,10 @@ speedLimit15
 speedLimit25
 speedLimit30
 speedLimit35
+speedLimit40
 speedLimit45
+speedLimit50
+speedLimit55
 speedLimit65
 speedLimitUrdbl
 stop
