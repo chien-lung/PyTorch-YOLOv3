@@ -1,0 +1,4 @@
+classes= 47
+train=data/LISA/train.txt
+valid=data/LISA/valid.txt
+names=data/LISA/classes.names

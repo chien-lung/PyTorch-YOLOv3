@@ -1,0 +1,4 @@
+classes= 43
+train=data/GTSDB/train.txt
+valid=data/GTSDB/valid.txt
+names=data/GTSDB/classes.names
