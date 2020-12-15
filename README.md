@@ -128,7 +128,7 @@ GTSDB dataset only contain 600 labeled images for training and 300 unlabeled ima
 Due to the limited number of images in GTSDB dataset, we integrate GTSRB when training.
 Specifically, a random pasting algorithm is proposed here, as shown below.
 
-<p align="center"><img src="assets/random_pasting.png" width="600"\></p>
+<p align="center"><img src="assets/random_pasting.png" width="1000"\></p>
 
     $ mv datasets/signs data/GTSDB # Running download_dataset.sh before executing this 
 
