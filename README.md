@@ -1,21 +1,27 @@
-# PyTorch-YOLOv3
-A minimal PyTorch implementation of YOLOv3, with support for training, inference and evaluation.
+# PyTorch-YOLOv3 on GTSDB and LISA
+A PyTorch implementation of YOLOv3, with support for training, inference and evaluation.
+Pretrained on [LISA dataset](http://cvrr.ucsd.edu/LISA/lisa-traffic-sign-dataset.html) and [GTSDB dataset](https://benchmark.ini.rub.de/gtsdb_news.html).
 
 ## Installation
 ##### Clone and install requirements
-    $ git clone https://github.com/eriklindernoren/PyTorch-YOLOv3
+    $ git clone https://github.com/chien-lung/PyTorch-YOLOv3.git
     $ cd PyTorch-YOLOv3/
+    $ python3 -m venv yolo_venv
+    $ source yolo_venv/bin/activate
     $ sudo pip3 install -r requirements.txt
 
-##### Download pretrained weights
-    $ cd weights/
+##### Download pretrained weights (COCO, GTSDB, and LISA)
     $ bash download_weights.sh
 
-##### Download COCO
+<!-- ##### Download COCO
     $ cd data/
-    $ bash get_coco_dataset.sh
+    $ bash get_coco_dataset.sh -->
+
+##### Download GTSDB, GTSRB, and LISA
+    $ cd datasets
+    $ bash download_datasets.sh
     
-## Test
+<!-- ## Test
 Evaluates the model on COCO test.
 
     $ python3 test.py --weights_path weights/yolov3.weights
@@ -25,24 +31,39 @@ Evaluates the model on COCO test.
 | YOLOv3 608 (paper)      | 57.9              |
 | YOLOv3 608 (this impl.) | 57.3              |
 | YOLOv3 416 (paper)      | 55.3              |
-| YOLOv3 416 (this impl.) | 55.5              |
+| YOLOv3 416 (this impl.) | 55.5              | -->
 
 ## Inference
-Uses pretrained weights to make predictions on images. Below table displays the inference times when using as inputs images scaled to 256x256. The ResNet backbone measurements are taken from the YOLOv3 paper. The Darknet-53 measurement marked shows the inference time of this implementation on my 1080ti card.
+Uses pretrained weights to make predictions on images. 
 
-| Backbone                | GPU      | FPS      |
+<!-- | Backbone                | GPU      | FPS      |
 | ----------------------- |:--------:|:--------:|
 | ResNet-101              | Titan X  | 53       |
 | ResNet-152              | Titan X  | 37       |
 | Darknet-53 (paper)      | Titan X  | 76       |
-| Darknet-53 (this impl.) | 1080ti   | 74       |
+| Darknet-53 (this impl.) | 1080ti   | 74       | -->
 
-    $ python3 detect.py --image_folder data/samples/
+    $ python3 detect.py --image_folder IMAGE_FOLDER
+                        --model_def MODEL_CONFIG.cfg
+                        --weights_path WEIGHT.pth
+                        --class_path CLASS_DEFINITION.names
+Example:
 
+    $ python3 detect.py --image_folder data/samples
+                        --model_def config/yolov3.cfg
+                        --weights_path weights/yolov3.weights
+                        --class_path data/coco.names
+
+### COCO
 <p align="center"><img src="assets/giraffe.png" width="480"\></p>
 <p align="center"><img src="assets/dog.png" width="480"\></p>
-<p align="center"><img src="assets/traffic.png" width="480"\></p>
-<p align="center"><img src="assets/messi.png" width="480"\></p>
+<!-- <p align="center"><img src="assets/traffic.png" width="480"\></p> -->
+<!-- <p align="center"><img src="assets/messi.png" width="480"\></p> -->
+
+### GTSDB
+
+### LISA
+
 
 ## Train
 ```
@@ -98,27 +119,36 @@ Track training progress in Tensorboard:
 $ tensorboard --logdir='logs' --port=6006
 ```
 
-## Train on Custom Dataset
+## Train on custom Dataset
 
-#### Custom model
-Run the commands below to create a custom model definition, replacing `<num-classes>` with the number of classes in your dataset.
+### GTSDB
+GTSDB dataset only contain 600 labeled images for training and 300 unlabeled images for testing.
+Due to the limited number of images in GTSDB dataset, we integrate GTSRB when training.
+Specifically, a random pasting algorithm is proposed here, as shown below.
+
+<p align="center"><img src="assets/random_pasting.png" width="600"\></p>
+
+    $ mv datasets/signs data/GTSDB # Running download_dataset.sh before executing this 
+
+#### Train
+To train on the GTSDB dataset run:
 
 ```
-$ cd config/                                # Navigate to config dir
-$ bash create_custom_model.sh <num-classes> # Will create custom model 'yolov3-custom.cfg'
+$ python3 train_GTSDB.py --model_def config/yolov3-GTSDB.cfg --data_config config/GTSDB.data 
 ```
 
-#### Classes
-Add class names to `data/custom/classes.names`. This file should have one row per class name.
+Add `--pretrained_weights weights/darknet53.conv.74` to train using a backend pretrained on ImageNet.
 
-#### Image Folder
-Move the images of your dataset to `data/custom/images/`.
+Note: here we run `train_GTSDB.py` because the the loading image method is different, which including random pasting GTSRB data.
 
-#### Annotation Folder
-Move your annotations to `data/custom/labels/`. The dataloader expects that the annotation file corresponding to the image `data/custom/images/train.jpg` has the path `data/custom/labels/train.txt`. Each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`. The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
+### Custom model
+Run the commands below to create a custom model definition, replacing `NUM_CLASSES` with the number of classes in your dataset.
 
-#### Define Train and Validation Sets
-In `data/custom/train.txt` and `data/custom/valid.txt`, add paths to images that will be used as train and validation data respectively.
+```
+$ cd config/                              # Navigate to config dir
+$ bash create_custom_model.sh NUM_CLASSES # Create custom model 'yolov3-custom.cfg'
+$ # Remind: DO NOT run this script multiple times.
+```
 
 #### Train
 To train on the custom dataset run:
@@ -128,6 +158,38 @@ $ python3 train.py --model_def config/yolov3-custom.cfg --data_config config/cus
 ```
 
 Add `--pretrained_weights weights/darknet53.conv.74` to train using a backend pretrained on ImageNet.
+
+### Training Set up
+<!-- ├ ─ ┼ ┴ ┬ ┤ ┌ ┐ │ └ ┘ -->
+Take `custom` as example, files should be modified:
+```
+data
+ └─custom
+    ├─classes.names
+    ├─images
+    ├─labels
+    ├─train.txt
+    └─valid.txt
+config
+ ├─custom.data
+ └─yolov3-custom.cfg
+```
+#### Classes
+Add class names to `data/custom/classes.names`. This file should have one row per class name.
+
+#### Image Folder
+Move the images of your dataset to `data/custom/images/`.
+
+#### Annotation Folder
+Move your annotations to `data/custom/labels/`.
+The dataloader expects that the annotation file corresponding to the image `data/custom/images/train.jpg` has the path `data/custom/labels/train.txt`.
+Each row in the annotation file should define one bounding box, using the syntax `label_idx x_center y_center width height`.
+If the annotation file doesn't define, then it will consider no object in the image.
+The coordinates should be scaled `[0, 1]`, and the `label_idx` should be zero-indexed and correspond to the row number of the class name in `data/custom/classes.names`.
+
+#### Define Train and Validation Sets
+In `data/custom/train.txt` and `data/custom/valid.txt`, add paths to images that will be used as train and validation data respectively.
+
 
 
 ## Credit
