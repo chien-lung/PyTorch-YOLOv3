@@ -3,14 +3,15 @@ A PyTorch implementation of YOLOv3, with support for training, inference and eva
 Pretrained on [LISA dataset](http://cvrr.ucsd.edu/LISA/lisa-traffic-sign-dataset.html) and [GTSDB dataset](https://benchmark.ini.rub.de/gtsdb_news.html).
 
 ## Installation
-##### Clone and install requirements
+##### Clone repo, install requirements, and create virtual enviroment
     $ git clone https://github.com/chien-lung/PyTorch-YOLOv3.git
     $ cd PyTorch-YOLOv3/
     $ python3 -m venv yolo_venv
     $ source yolo_venv/bin/activate
-    $ sudo pip3 install -r requirements.txt
+    $ sudo pip install -r requirements.txt
 
 ##### Download pretrained weights (COCO, GTSDB, and LISA)
+    $ cd weights
     $ bash download_weights.sh
 
 <!-- ##### Download COCO
@@ -43,13 +44,13 @@ Uses pretrained weights to make predictions on images.
 | Darknet-53 (paper)      | Titan X  | 76       |
 | Darknet-53 (this impl.) | 1080ti   | 74       | -->
 
-    $ python3 detect.py --image_folder IMAGE_FOLDER
+    $ python detect.py --image_folder IMAGE_FOLDER
                         --model_def MODEL_CONFIG.cfg
                         --weights_path WEIGHT.pth
                         --class_path CLASS_DEFINITION.names
 Example:
 
-    $ python3 detect.py --image_folder data/samples
+    $ python detect.py --image_folder data/samples
                         --model_def config/yolov3.cfg
                         --weights_path weights/yolov3.weights
                         --class_path data/coco.names
@@ -61,7 +62,8 @@ Example:
 <!-- <p align="center"><img src="assets/messi.png" width="480"\></p> -->
 
 ### GTSDB
-
+<p align="center"><img src="assets/no_entry.png" width="480"\></p>
+<p align="center"><img src="assets/stop.png" width="480"\></p>
 ### LISA
 
 
@@ -134,7 +136,7 @@ Specifically, a random pasting algorithm is proposed here, as shown below.
 To train on the GTSDB dataset run:
 
 ```
-$ python3 train_GTSDB.py --model_def config/yolov3-GTSDB.cfg --data_config config/GTSDB.data 
+$ python train_GTSDB.py --model_def config/yolov3-GTSDB.cfg --data_config config/GTSDB.data 
 ```
 
 Add `--pretrained_weights weights/darknet53.conv.74` to train using a backend pretrained on ImageNet.
@@ -154,7 +156,7 @@ $ # Remind: DO NOT run this script multiple times.
 To train on the custom dataset run:
 
 ```
-$ python3 train.py --model_def config/yolov3-custom.cfg --data_config config/custom.data
+$ python train.py --model_def config/yolov3-custom.cfg --data_config config/custom.data
 ```
 
 Add `--pretrained_weights weights/darknet53.conv.74` to train using a backend pretrained on ImageNet.

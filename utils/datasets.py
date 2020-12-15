@@ -195,7 +195,7 @@ class GTSDB_Dataset(Dataset):
         augment=True,
         multiscale=True,
         normalized_labels=True,
-        df_path = "data/custom/signs/GT-all.csv",
+        df_path = "data/GTSDB/signs/GT_all.csv",
     ):
         with open(list_path, "r") as file:
             self.img_files = file.readlines()

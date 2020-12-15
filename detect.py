@@ -111,21 +111,31 @@ if __name__ == "__main__":
             n_cls_preds = len(unique_labels)
             bbox_colors = random.sample(colors, n_cls_preds)
             for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
-
-                print("\t+ Label: %s, Conf: %.5f" % (classes[int(cls_pred)], cls_conf.item()))
+                print(cls_pred, cls_conf)
+                print(
+                    "\t+ Label: %s, Conf: %.5f"
+                    % (classes[int(cls_pred)], cls_conf.item())
+                )
 
                 box_w = x2 - x1
                 box_h = y2 - y1
 
                 color = bbox_colors[int(np.where(unique_labels == int(cls_pred))[0])]
                 # Create a Rectangle patch
-                bbox = patches.Rectangle((x1, y1), box_w, box_h, linewidth=1, edgecolor=color, facecolor="none")
+                bbox = patches.Rectangle(
+                    (x1, y1),
+                    box_w,
+                    box_h,
+                    linewidth=1,
+                    edgecolor=color,
+                    facecolor="none",
+                )
                 # Add the bbox to the plot
                 ax.add_patch(bbox)
                 # Add label
                 plt.text(
                     x1,
-                    y1-33,
+                    y1 - 40,
                     s=classes[int(cls_pred)],
                     color="white",
                     verticalalignment="top",
