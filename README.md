@@ -64,8 +64,10 @@ Example:
 ### GTSDB
 <p align="center"><img src="assets/no_entry.png" width="480"\></p>
 <p align="center"><img src="assets/stop.png" width="480"\></p>
-### LISA
 
+### LISA
+<p align="center"><img src="assets/pedestrianCrossing.png" width="480"\></p>
+<p align="center"><img src="assets/yield.png" width="480"\></p>
 
 ## Train
 ```
@@ -147,9 +149,9 @@ Note: here we run `train_GTSDB.py` because the the loading image method is diffe
 Run the commands below to create a custom model definition, replacing `NUM_CLASSES` with the number of classes in your dataset.
 
 ```
+$ # Remind: DO NOT run this script multiple times.
 $ cd config/                              # Navigate to config dir
 $ bash create_custom_model.sh NUM_CLASSES # Create custom model 'yolov3-custom.cfg'
-$ # Remind: DO NOT run this script multiple times.
 ```
 
 #### Train
